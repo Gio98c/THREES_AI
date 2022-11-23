@@ -229,7 +229,7 @@ public class Game_Ai extends JPanel{
     LinkedList<Tile> list = new LinkedList<Tile>();
     for (int i = 0; i < 4 && !oldLine[i].isEmpty(); i++) {
       int num = oldLine[i].value;
-      if (i < 3 && oldLine[i].value == oldLine[i + 1].value) {
+      if (i < 3 && oldLine[i].value == oldLine[i + 1].value && !(oldLine[i].value == 2 && oldLine[i+1].value == 2) && !(oldLine[i].value == 1 && oldLine[i+1].value == 1)) {
         num *= 2;
         myScore += num;
         int ourTarget = 2048;
