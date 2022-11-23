@@ -136,7 +136,8 @@ public class Game_Ai extends JPanel{
     if (!availableSpace().isEmpty()) {
       int index = (int) (Math.random() * list.size()) % list.size();
       Tile emptyTime = list.get(index);
-      emptyTime.value = Math.random() < 0.9 ? 2 : 4;
+      emptyTime.value = Math.random() < 0.9 ? 1 : 2;
+      //emptyTime.value = (int)(Math.random()+1)*2;
     }
   }
   
