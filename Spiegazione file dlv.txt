@@ -1,0 +1,75 @@
+Il codice ASP che mi hai mandato è un programma di programmazione logica che definisce un insieme di regole e vincoli. Il programma modella un problema di risoluzione di un puzzle in cui è richiesto di unire due numeri dello stesso valore posizionati in celle adiacenti, muovendo le celle che contengono i numeri in modo che vengano uniti in una sola cella.
+
+Il programma è composto dalle seguenti parti:
+
+La definizione dei predicati che definiscono la matrice in cui i numeri sono posizionati: inMatrice(I, X, Y, V). Questo predicato è vero se la cella nella riga X e colonna Y contiene il numero V.
+
+Le definizioni dei predicati che controllano se un numero è presente in una cella tra due celle date: elementoInMezzo(riga,I1,I2) e elementoInMezzo(colonna,I1,I2).
+
+Le definizioni dei predicati che controllano se due celle adiacenti possono essere unite: merge(sinistra,I1,I2), merge(destra,I1,I2), merge(giu,I1,I2), merge(su,I1,I2). Questi predicati sono veri se le celle I1 e I2 possono essere unite rispettivamente andando a sinistra, destra, giù o su.
+
+Il predicato countMerge(Z,C) conta il numero di volte che è possibile unire due celle adiacenti utilizzando la mossa Z.
+
+Il predicato maxCount(X) determina il massimo numero di volte che è possibile unire due celle adiacenti.
+
+Il predicato possibile(X) è vero se è possibile unire due celle adiacenti utilizzando la mossa X.
+
+I predicati spazioRigaDopoY(X,Y), spazioRigaPrimaY(X,Y), spazioColonnaDopoX(X,Y), spazioColonnaPrimaX(X,Y) controllano se è presente uno spazio vuoto nella riga o colonna dopo o prima della cella nella posizione (X,Y).
+
+Gli assiomi ASP esprimono i vincoli che regolano le mosse che possono essere effettuate per unire le celle adiacenti. Ad esempio, l'assioma scelta(su) | notScelta(su) :- possibile(su). esprime la scelta di una mossa su o la non scelta di una mossa su se è possibile unire due celle adiacenti utilizzando la mossa su.
+
+Gli assiomi ASP esprimono anche dei vincoli negativi che vietano certe combinazioni di mosse che porterebbero a una soluzione non valida.
+
+L'assioma :~ #count{X : scelta(X)} = 0. [1@3] esprime il vincolo che impedisce di non effettuare nessuna mossa.
+
+L'assioma coppia(sinistra,destra). coppia(X,Y) :- coppia(Y,X). coppia(su,giu). definisce la relazione tra le coppie di mosse possibili.
+
+Gli assiomi ASP esprimono i vincoli che regolano il comportamento del programma nel caso in cui siano present
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Il codice ASP presenta un insieme di regole logiche che definiscono un gioco.
+
+1. La regola afferma che se una scelta è possibile, allora deve essere effettuata, altrimenti non deve essere effettuata.
+2. La regola afferma che se sono state fatte due scelte diverse, allora devono essere diverse tra loro.
+3. La regola afferma che il numero di scelte effettuate deve essere uguale a zero. Questo significa che non è possibile fare alcuna scelta.
+4. La regola afferma che la coppia di valori sinistra e destra esiste.
+5. La regola afferma che la coppia di valori X e Y esiste se esiste anche la coppia Y e X.
+6. La regola afferma che la coppia di valori su e giù esiste.
+7. La regola afferma che se si sceglie "su" e "giù" è possibile, allora devono essere fusi insieme (merge), e il risultato deve essere all'interno della matrice, alla stessa colonna, ma ad una riga successiva (Y>1).
+8. La regola afferma che se si sceglie "giù" e "destra" è possibile, allora devono essere fusi insieme (merge), e il risultato deve essere all'interno della matrice, nella seconda riga e nella terza colonna.
+9. La regola afferma che se non si sceglie "giù" ed è possibile, allora la fusione tra "giù" e altre scelte non deve essere possibile, e il risultato della fusione tra "giù" deve essere in una riga specifica e nella stessa colonna.
+10. La regola afferma che se si sceglie "su" ed è possibile, allora la scelta non può essere né "sinistra" né "su".
+11. La regola afferma che se non si sceglie "su" ed è possibile, allora la scelta "su" deve essere possibile e la scelta "destra" non deve essere possibile. Inoltre, l'ultima colonna della matrice non deve essere vuota e deve contenere un valore diverso da zero nella seconda e terza riga. Questi due valori devono essere uno sopra l'altro.
+12. La regola afferma che se non si sceglie "su" ed è possibile, allora la scelta "su" deve essere possibile e la scelta "destra" non deve essere possibile. Inoltre, l'ultima colonna della matrice non deve essere vuota e deve contenere un valore diverso da zero nella seconda riga. Questi due valori devono essere uno accanto all'altro e il valore nella terza riga deve essere il prodotto del valore nella seconda riga e 3.
+13. La regola afferma che se non si sceglie X ed è possibile, allora il conteggio delle fusioni per X deve essere uguale al conteggio delle fusioni per Y, e non deve esistere una coppia di valori X e Y.
+14. :~ notScelta(destra), possibile(destra), inMatrice(_,X,3,0), X != 3. [1@2]
+Questa regola afferma che se non è stata scelta l'azione "destra" ma questa azione è possibile (cioè non è già stata effettuata in una mossa precedente), e in una qualsiasi posizione della terza riga della matrice il valore è 0, allora la regola viene violata.
+
+In altre parole, se c'è una cella vuota nell'ultima riga della matrice e l'azione "destra" è possibile, allora tale azione deve essere scelta.
+
+15. :~ notScelta(giu), possibile(giu), inMatrice(,3,3,0), inMatrice(,_,3,V), V > 0. [V@2]
+Questa regola afferma che se non è stata scelta l'azione "giù" ma questa azione è possibile (cioè non è già stata effettuata in una mossa precedente), e in una qualsiasi posizione della terza colonna della matrice il valore è 0 e in una qualsiasi posizione di quella colonna (diversa dall'ultima) il valore è diverso da 0, allora la regola viene violata.
+
+In altre parole, se c'è una cella vuota nell'ultima colonna della matrice e l'azione "giù" è possibile, allora tale azione deve essere scelta solo se in quella colonna c'è almeno un valore diverso da 0.
+
+16. :~ scelta(su). [3@3]
+Questa regola afferma che se l'azione "su" è stata scelta, allora la regola viene violata. In altre parole, non è possibile scegliere l'azione "su" più di una volta.
+
+%17. vuotoUltimaColonna :- inMatrice(,,3,0).
+Questa regola afferma che la variabile "vuotoUltimaColonna" è vera se e solo se esiste almeno una cella vuota nell'ultima colonna della matrice.
+
+%18. mergeUltimaColonna :- inMatrice(ID1,,3,), inMatrice(ID2,,3,), merge(Z,ID1,ID2), Z != sinistra, Z != destra.
+Questa regola afferma che la variabile "mergeUltimaColonna" è vera se e solo se esistono due celle diverse da sinistra e destra (perché queste due azioni non possono essere utilizzate nell'ultima colonna) nella terza riga della matrice che possono essere fuse utilizzando un'azione di merge. In altre parole, se è possibile fare una fusione nell'ultima colonna della matrice, allora la variabile "mergeUltimaColonna" diventa vera.
+
+%19. ultimaColonnaFissa :- not vuotoUltimaColonna, not mergeUltimaColonna.
+Questa regola afferma che la variabile "ultimaColonnaFissa" è vera se e solo se l'ultima colonna della matrice non può essere modificata. In particolare, questa variabile diventa vera solo se non ci sono celle vuote e non è possibile effettuare nessuna fusione nell'ultima colonna.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
