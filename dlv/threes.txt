@@ -45,14 +45,10 @@ coppia(su,giu).
 :~ notScelta(giu), possibile(giu), merge(giu,ID1,ID2), inMatrice(ID1,X,3,V), inMatrice(ID2,X,3,V). [V@1]
 :~ scelta(su), possibile(X), X != sinistra, X != su. [1@1]
 
-:~ notScelta(su), possibile(su), not possibile(destra), ultimaColonnaFissa, inMatrice(_,X1,2,V), inMatrice(_,X2,3,V), X2 = X1 - 1, V != 0. [V@1]
+:~ notScelta(su), possibile(su), not possibile(destra), inMatrice(_,X1,2,V), inMatrice(_,X2,3,V), X2 = X1 - 1, V != 0. [V@1]
 
 :~ notScelta(X), possibile(X), countMerge(X,C), countMerge(Y,C), not coppia(X,Y), countMax(C) . [2@1]
 
 :~ notScelta(destra), possibile(destra), inMatrice(_,X,3,0), X != 3. [1@2]
 :~ notScelta(giu), possibile(giu), inMatrice(_,3,3,0), inMatrice(_,_,3,V), V > 0. [V@2]
 
-vuotoUltimaColonna :- inMatrice(_,_,3,0).
-mergeUltimaColonna :- inMatrice(ID1,_,3,_), inMatrice(ID2,_,3,_), merge(Z,ID1,ID2), Z != sinistra, Z != destra.
-ultimaColonnaFissa :- not vuotoUltimaColonna, not mergeUltimaColonna.
-	
